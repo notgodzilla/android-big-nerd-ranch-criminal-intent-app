@@ -6,10 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -57,27 +60,31 @@ public class CrimeListFragment extends Fragment {
         public void onBindViewHolder(@NonNull CrimeHolder holder, int position) {
             Crime crime = crimes.get(position);
             holder.bind(crime);
-
         }
 
         @Override
         public int getItemCount() {
             return crimes.size();
         }
-
     }
 
-    private class CrimeHolder extends RecyclerView.ViewHolder {
+    private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView titleTextView;
         private TextView dateTextView;
         private Crime crime;
+        private ImageView crimeSolved;
 
         public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_crime, parent, false));
 
+            //Each View has an associated ViewHolder - we can make This its own onClickListener
+            itemView.setOnClickListener(this);
+
             titleTextView = (TextView) itemView.findViewById(R.id.crime_title);
             dateTextView = (TextView) itemView.findViewById(R.id.crime_date);
+
+            crimeSolved = (ImageView) itemView.findViewById(R.id.crime_solved);
         }
 
         public void bind(Crime crime) {
@@ -85,8 +92,14 @@ public class CrimeListFragment extends Fragment {
             this.titleTextView.setText(crime.getTitle());
             this.dateTextView.setText(crime.getDate().toString());
 
-
+            crimeSolved.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);
         }
 
+        @Override
+        public void onClick(View view) {
+            Toast t = Toast.makeText(getActivity(), this.crime.getTitle(), Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER, Gravity.CENTER, Gravity.CENTER);
+            t.show();
+        }
     }
 }
