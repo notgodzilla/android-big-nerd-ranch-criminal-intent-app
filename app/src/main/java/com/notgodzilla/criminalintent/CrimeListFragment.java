@@ -1,5 +1,6 @@
 package com.notgodzilla.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -97,9 +98,9 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            Toast t = Toast.makeText(getActivity(), this.crime.getTitle(), Toast.LENGTH_SHORT);
-            t.setGravity(Gravity.CENTER, Gravity.CENTER, Gravity.CENTER);
-            t.show();
+            //getActivity() gets the Activity that instantiated this instance of CrimeListFragment
+            Intent i = CrimeActivity.newIntent(getActivity(), crime.getUuid());
+            startActivity(i);
         }
     }
 }

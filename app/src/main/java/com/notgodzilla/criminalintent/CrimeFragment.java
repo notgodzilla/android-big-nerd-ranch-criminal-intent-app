@@ -17,6 +17,8 @@ import android.widget.EditText;
 import com.notgodzilla.criminalintent.Crime;
 import com.notgodzilla.criminalintent.R;
 
+import java.util.UUID;
+
 public class CrimeFragment extends Fragment {
 
     private Crime crime;
@@ -24,11 +26,22 @@ public class CrimeFragment extends Fragment {
     private Button dateButton;
     private CheckBox solvedCheckbox;
 
+    private static final String ARG_CRIME_ID = "crime_id";
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.crime = new Crime();
+        UUID id = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        this.crime = CrimeLab.get(getActivity()).getCrime(id);
+    }
+
+    public static CrimeFragment newInstance(UUID id) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, id);
+        CrimeFragment crimeFragment = new CrimeFragment();
+        crimeFragment.setArguments(args);
+        return crimeFragment;
     }
 
     @Nullable
@@ -37,6 +50,7 @@ public class CrimeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
         titleField = (EditText) v.findViewById(R.id.crime_title);
+        titleField.setText(crime.getTitle());
         setTextChangeListener();
 
         dateButton = (Button) v.findViewById(R.id.crime_date);
@@ -44,8 +58,8 @@ public class CrimeFragment extends Fragment {
         dateButton.setEnabled(false);
 
         solvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
+        solvedCheckbox.setChecked(crime.isSolved());
         setSolvedCheckboxListener();
-
 
         return v;
     }
