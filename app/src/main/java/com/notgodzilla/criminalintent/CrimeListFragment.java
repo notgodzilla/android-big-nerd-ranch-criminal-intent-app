@@ -40,6 +40,19 @@ public class CrimeListFragment extends Fragment {
 
         crimeAdapter = new CrimeAdapter(crimes);
         crimeRecyclerView.setAdapter(crimeAdapter);
+        if(crimeAdapter == null) {
+            crimeAdapter = new CrimeAdapter(crimes);
+            crimeRecyclerView.setAdapter(crimeAdapter);
+        } else {
+            //Notifies change in when instance of CrimeAdapter is already set up
+            crimeAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
