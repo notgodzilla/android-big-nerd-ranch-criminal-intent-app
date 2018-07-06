@@ -112,7 +112,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View view) {
             //getActivity() gets the Activity that instantiated this instance of CrimeListFragment
-            Intent i = CrimeActivity.newIntent(getActivity(), crime.getUuid());
+            Intent i = CrimePageActivity.newIntent(getActivity(), crime.getUuid());
             startActivity(i);
         }
     }
