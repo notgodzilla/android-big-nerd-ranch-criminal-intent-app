@@ -1,7 +1,10 @@
 package com.notgodzilla.criminalintent;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +14,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DatePickerFragment extends DialogFragment {
 
@@ -46,8 +50,36 @@ public class DatePickerFragment extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity()).setTitle(R.string.date_picker_title)
                 .setView(v)
-                .setPositiveButton(android.R.string.ok, null)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    //Listener for this AlertDialog (Calendar) for when user selects a date
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        int year = datePicker.getYear();
+                        int month = datePicker.getMonth();
+                        int day = datePicker.getDayOfMonth();
+
+                        Date selectedDate = new GregorianCalendar(year, month, day).getTime();
+                        sendResult(Activity.RESULT_OK, selectedDate);
+
+                    }
+                })
                 .create();
+    }
+
+
+    //Creates Intent with This DatePickerFragment's date as an extra and calls CrimeFragmentActivity
+    private void sendResult(int resultCode, Date date) {
+        if(getTargetFragment() != null) {
+            Intent i = new Intent();
+            i.putExtra(EXTRA_DATE, date);
+
+            //getTargetRequestCode() gets the request code set by setTargetFragment
+            getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
+
+        } else {
+            return;
+        }
     }
 
 }

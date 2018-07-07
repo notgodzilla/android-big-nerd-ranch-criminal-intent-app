@@ -1,5 +1,7 @@
 package com.notgodzilla.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -59,7 +61,7 @@ public class CrimeFragment extends Fragment {
         setTextChangeListener();
 
         dateButton = (Button) v.findViewById(R.id.crime_date);
-        dateButton.setText(crime.getDate().toString());
+        updateDate();
         setDateButtonListener();
 
         solvedCheckbox = (CheckBox) v.findViewById(R.id.crime_solved);
@@ -67,6 +69,24 @@ public class CrimeFragment extends Fragment {
         setSolvedCheckboxListener();
 
         return v;
+    }
+
+    //Responds to dialog from DatePickerFragent
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if(requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            crime.setDate(date);
+            updateDate();
+        }
+    }
+
+    private void updateDate() {
+        dateButton.setText(crime.getDate().toString());
     }
 
     private void setDateButtonListener() {
