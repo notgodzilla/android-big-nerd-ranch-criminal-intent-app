@@ -11,6 +11,11 @@ import java.util.UUID;
 
 public class CrimeActivity extends SingleFragmentActivity {
 
+    /*
+    * NOTE: This class is no longer in use and has been replaced by CrimePageActivity.
+    * Keeping this class here for reference and notes
+    *
+    */
     private static final String EXTRA_CRIME_ID = "com.notgodzilla.criminalintent.crime_id";
 
     @Override
